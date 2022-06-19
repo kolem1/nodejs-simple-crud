@@ -11,6 +11,8 @@ const server = http.createServer(async (req, res) => {
       await UsersController.addUser(req, res);
     } else if (/^\/users\/.+/.test(url || '') && method === 'GET') {
       await UsersController.getUser(req, res);
+    } else if (/^\/users\/.+/.test(url || '') && method === 'DELETE') {
+      await UsersController.deleteUser(req, res);
     } else {
       res.writeHead(404, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ message: 'Route not found' }));

@@ -45,3 +45,24 @@ export const addUser: ControllerFunction = async (req, res) => {
   res.writeHead(201, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(newUser));
 };
+
+export const deleteUser: ControllerFunction = async (req, res) => {
+  const id = req.url?.split('/')[2];
+
+  if (!id || !validateUuid(id)) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User id is invalid' }));
+    return;
+  }
+
+  const isDeleted = await UsersModel.deleteUser(id);
+
+  if (isDeleted) {
+    res.statusCode = 204;
+    res.end();
+    return;
+  }
+
+  res.writeHead(404, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ message: 'User is not found' }));
+};

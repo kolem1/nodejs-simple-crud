@@ -9,7 +9,7 @@ interface IUser {
 
 export type ReceivedUser = Omit<IUser, 'id'>;
 
-const users: IUser[] = [];
+let users: IUser[] = [];
 
 export const getUsers = () => {
   return Promise.resolve(users);
@@ -27,4 +27,15 @@ export const addUser = (user: ReceivedUser) => {
   users.push(newUser);
 
   return Promise.resolve(newUser);
+};
+
+export const deleteUser = async (userId: string) => {
+  const user = await getUser(userId);
+
+  if (user) {
+    users = users.filter(({ id }) => id !== userId);
+    return true;
+  }
+
+  return false;
 };
