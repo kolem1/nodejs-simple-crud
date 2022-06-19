@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-interface IUser {
+export interface IUser {
   id: string;
   username: string;
   age: number;
@@ -38,4 +38,24 @@ export const deleteUser = async (userId: string) => {
   }
 
   return false;
+};
+
+export const editUser = async (userId: string, user: Partial<IUser>) => {
+  const index = users.findIndex(({ id }) => id === userId);
+  if (index === -1) {
+    return Promise.resolve(null);
+  }
+
+  const prevUser = users[index];
+
+  const newUser: IUser = {
+    id: prevUser.id,
+    username: user.username ?? prevUser.username,
+    age: user.age ?? prevUser.age,
+    hobbies: user.hobbies ?? prevUser.hobbies,
+  };
+
+  users[index] = newUser;
+
+  return Promise.resolve(newUser);
 };

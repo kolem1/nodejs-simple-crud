@@ -66,3 +66,25 @@ export const deleteUser: ControllerFunction = async (req, res) => {
   res.writeHead(404, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ message: 'User is not found' }));
 };
+
+export const editUser: ControllerFunction = async (req, res) => {
+  const id = req.url?.split('/')[2];
+
+  if (!id || !validateUuid(id)) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User id is invalid' }));
+    return;
+  }
+
+  const receivedUser = await parseBody<Partial<UsersModel.IUser>>(req);
+  const editedUser = await UsersModel.editUser(id, receivedUser);
+
+  if (!editedUser) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User is not found' }));
+    return;
+  }
+
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(editedUser));
+};

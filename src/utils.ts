@@ -12,8 +12,12 @@ export function parseBody<T>(req: IncomingMessage): Promise<T> {
         body += chunk;
       })
       .on('end', () => {
-        resolve(JSON.parse(body || '{}'));
-        reject();
+        try {
+          const requestBody = JSON.parse(body || '{}');
+          resolve(requestBody);
+        } catch {
+          reject();
+        }
       });
   });
 }
