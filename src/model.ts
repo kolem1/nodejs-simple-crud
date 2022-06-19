@@ -15,6 +15,12 @@ export const getUsers = () => {
   return Promise.resolve(users);
 };
 
+export const getUser = (userId: string) => {
+  const user = users.find(({ id }) => id === userId);
+
+  return Promise.resolve(user);
+};
+
 export const addUser = (user: ReceivedUser) => {
   const newUser: IUser = { id: uuidv4(), ...user };
 

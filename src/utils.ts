@@ -20,6 +20,5 @@ export function parseBody<T>(req: IncomingMessage): Promise<T> {
 
 export function handleServerError(res: ServerResponse) {
   res.writeHead(500, { 'Content-Type': 'application/json' });
-  res.write(JSON.stringify({ message: 'Something went wrong' }));
-  res.end();
+  res.end(JSON.stringify({ message: 'Something went wrong' }));
 }
